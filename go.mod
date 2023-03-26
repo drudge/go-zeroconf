@@ -1,4 +1,4 @@
-module github.com/drudge/go-zeroconf
+module github.com/grandcat/zeroconf
 
 go 1.13
 
