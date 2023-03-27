@@ -50,8 +50,12 @@ func Register(instance, service, domain string, port int, text []string, ifaces 
 		}
 	}
 
-	if !strings.HasSuffix(trimDot(entry.HostName), entry.Domain) {
+	if !strings.HasSuffix(trimDot(entry.HostName), trimDot(entry.Domain)) {
 		entry.HostName = fmt.Sprintf("%s.%s.", trimDot(entry.HostName), trimDot(entry.Domain))
+	}
+
+	if !strings.HasSuffix(entry.HostName, ".") {
+		entry.HostName = fmt.Sprintf("%s.", entry.HostName)
 	}
 
 	if len(ifaces) == 0 {
@@ -525,7 +529,7 @@ func (s *Server) serviceTypeName(resp *dns.Msg, ttl uint32) {
 }
 
 // Perform probing & announcement
-//TODO: implement a proper probing & conflict resolution
+// TODO: implement a proper probing & conflict resolution
 func (s *Server) probe() {
 	q := new(dns.Msg)
 	q.SetQuestion(s.service.ServiceInstanceName(), dns.TypePTR)
